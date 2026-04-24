@@ -2,43 +2,48 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<title>HELIXBEAM — 직접 만든 것은 다르게 쓰인다 </title>
+<title>HELIXBEAM — Mechanical System Guide</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=DM+Mono:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{background:#0C0C0C;overflow-x:hidden;font-family:'DM Mono',monospace;}
+body{background:#050505;overflow-x:hidden;font-family:'IBM Plex Mono',monospace;color:#fff;}
 #canvas-container{position:fixed;top:0;left:0;width:100%;height:100vh;z-index:0;}
 canvas{display:block;}
 .scroll-driver{position:relative;z-index:1;height:800vh;}
 .ui-layer{position:fixed;top:0;left:0;width:100%;height:100vh;z-index:10;pointer-events:none;}
+.ui-layer::before{content:'';position:absolute;inset:22px 28px;border:1px solid rgba(17,17,17,0.24);background:linear-gradient(90deg,rgba(17,17,17,0.05) 0 1px,transparent 1px 100%),linear-gradient(180deg,rgba(255,255,255,0.20),rgba(244,241,232,0.08));background-size:96px 100%,100% 100%;pointer-events:none;}
+.ui-layer::after{content:'MECHANICAL SYSTEM GUIDE';position:absolute;right:34px;top:50%;transform:translateY(-50%) rotate(90deg);transform-origin:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;letter-spacing:0.22em;color:rgba(17,17,17,0.56);pointer-events:none;}
+.ui-layer>*{position:absolute;}
 
-.hero-brand{position:absolute;top:48px;left:50%;transform:translateX(-50%);text-align:center;opacity:0;transition:opacity 1.2s;white-space:nowrap;}
+.hero-brand{position:absolute;top:34px;left:44px;transform:none;text-align:left;opacity:0;transition:opacity 1.2s;white-space:nowrap;padding:0;background:transparent;border:none;border-radius:0;backdrop-filter:none;}
 .hero-brand.visible{opacity:1;}
-.hero-brand-sub{font-size:10px;letter-spacing:0.3em;color:#3A3A38;text-transform:uppercase;margin-bottom:10px;}
-.hero-brand-main{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;letter-spacing:0.12em;color:#E8E4DC;line-height:1;}
+.hero-brand-sub{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;letter-spacing:0.26em;color:#111;text-transform:uppercase;margin-bottom:8px;}
+.hero-brand-main{font-family:'Archivo Black','Pretendard',sans-serif;font-size:96px;font-weight:900;letter-spacing:-0.06em;color:#101010;line-height:0.82;text-transform:uppercase;text-shadow:none;}
+.hero-brand-main::after{content:'®';font-family:'IBM Plex Mono',monospace;font-size:16px;vertical-align:top;margin-left:5px;}
 
-.hero-tagline{position:absolute;bottom:60px;left:50%;transform:translateX(-50%);text-align:center;opacity:0;transition:opacity 1.2s 0.4s;white-space:nowrap;}
+.hero-tagline{position:absolute;left:44px;bottom:46px;transform:none;text-align:left;opacity:0;transition:opacity 1.2s 0.4s;white-space:nowrap;padding:0;background:transparent;border:none;border-radius:0;backdrop-filter:none;}
 .hero-tagline.visible{opacity:1;}
-.tagline-main{font-family:'Pretendard',sans-serif;font-size:20px;font-weight:300;letter-spacing:-0.02em;color:#C4BEB2;margin-bottom:10px;}
-.tagline-sub{font-family:'Pretendard',sans-serif;font-size:13px;font-weight:300;letter-spacing:-0.01em;color:#4A4A48;margin-bottom:24px;}
-.scroll-hint{font-size:9px;letter-spacing:0.25em;color:#3A3A38;text-transform:uppercase;}
-.scroll-line{width:1px;height:32px;background:#2A2A28;margin:8px auto 0;animation:sp 2s infinite;}
-@keyframes sp{0%,100%{opacity:0.3;}50%{opacity:1;}}
+.tagline-main{font-family:'Pretendard',sans-serif;font-size:46px;font-weight:300;letter-spacing:-0.065em;color:#111;margin-bottom:12px;text-shadow:none;}
+.tagline-sub{font-family:'Pretendard',sans-serif;font-size:16px;font-weight:500;letter-spacing:-0.02em;color:#333;margin-bottom:22px;text-shadow:none;}
+.scroll-hint{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:0.32em;color:#111;text-transform:uppercase;}
+.scroll-line{width:64px;height:2px;background:#111;margin:10px 0 0;animation:sp 2s infinite;}
+@keyframes sp{0%,100%{opacity:0.25;}50%{opacity:1;}}
 
+.poster-corner{position:absolute;width:72px;height:22px;border-top:2px solid #111;border-bottom:0;opacity:.8;}
 /* PHASE LABEL — center bottom */
 .phase-label{position:absolute;bottom:48px;left:50%;transform:translateX(-50%);text-align:center;opacity:0;transition:opacity 0.5s;}
 .phase-label.visible{opacity:1;}
-.phase-title{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:400;letter-spacing:0.3em;text-transform:uppercase;color:#5A5850;margin-bottom:6px;}
-.phase-desc{font-family:'Pretendard',sans-serif;font-size:12px;font-weight:300;letter-spacing:-0.01em;color:#3A3A38;}
+.phase-title{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;letter-spacing:0.28em;text-transform:uppercase;color:#111;margin-bottom:6px;}
+.phase-desc{font-family:'Pretendard',sans-serif;font-size:14px;font-weight:500;letter-spacing:-0.02em;color:#333;}
 
 /* PART LABELS */
 .part-label{position:absolute;opacity:0;transition:opacity 0.35s ease;pointer-events:none;}
-.part-label-line{height:0.5px;background:#2A2A28;margin-bottom:8px;}
-.part-label-name{font-size:9px;letter-spacing:0.2em;color:#6A6860;text-transform:uppercase;margin-bottom:3px;}
-.part-label-desc{font-size:11px;font-family:'Pretendard',sans-serif;font-weight:300;color:#3A3A38;letter-spacing:-0.01em;}
-.part-label.active{opacity:1;}
+.part-label-line{height:1px;background:rgba(17,17,17,0.45);margin-bottom:10px;box-shadow:none;}
+.part-label-name{font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700;letter-spacing:0.24em;color:#111;text-transform:uppercase;margin-bottom:7px;text-shadow:none;}
+.part-label-desc{font-size:17px;line-height:1.42;font-family:'Pretendard',sans-serif;font-weight:500;color:#3B3B38;letter-spacing:-0.035em;text-shadow:none;}
+.part-label.active{opacity:1;filter:none;}
 .lbl-right .part-label-line{margin-left:auto;}
 .lbl-right .part-label-name{text-align:right;}
 .lbl-right .part-label-desc{text-align:right;}
@@ -46,19 +51,19 @@ canvas{display:block;}
 /* STAGE INDICATOR */
 .stage-indicator{position:absolute;bottom:48px;right:48px;text-align:right;opacity:0;transition:opacity 0.6s;}
 .stage-indicator.visible{opacity:1;}
-.stage-letter{font-family:'Cormorant Garamond',serif;font-size:80px;font-weight:300;line-height:0.9;}
-.stage-name{font-size:10px;letter-spacing:0.25em;text-transform:uppercase;margin-top:6px;}
-.stage-kr{font-family:'Pretendard',sans-serif;font-size:12px;font-weight:300;margin-top:8px;line-height:1.7;max-width:180px;text-align:right;}
+.stage-letter{font-family:'Archivo Black',sans-serif;font-size:88px;font-weight:900;line-height:0.9;color:#111;}
+.stage-name{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;margin-top:6px;color:#111!important;}
+.stage-kr{font-family:'Pretendard',sans-serif;font-size:16px;font-weight:500;margin-top:10px;line-height:1.6;max-width:220px;text-align:right;color:#333!important;}
 
 /* SPEC CARD */
-.spec-card{position:absolute;bottom:48px;left:48px;width:210px;opacity:0;transition:opacity 0.6s;background:#0A0A08;border:0.5px solid #1A2A3A;border-radius:2px;padding:18px;overflow:hidden;}
-.spec-card::before{content:'';position:absolute;top:0;left:0;width:2px;height:100%;background:#4A7AAA;}
+.spec-card{position:absolute;bottom:48px;left:48px;width:250px;opacity:0;transition:opacity 0.6s;background:rgba(255,255,255,0.70);border:1px solid rgba(17,17,17,0.28);border-radius:0;padding:18px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.06);}
+.spec-card::before{content:'';position:absolute;top:0;left:0;width:5px;height:100%;background:#E84A2A;}
 .spec-card.visible{opacity:1;}
-.spec-card-title{font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:#4A7AAA;margin-bottom:12px;}
-.spec-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:0.5px solid #141414;}
+.spec-card-title{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#111;margin-bottom:12px;}
+.spec-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(17,17,17,0.12);}
 .spec-row:last-child{border-bottom:none;}
-.spec-key{font-size:9px;letter-spacing:0.08em;color:#2A2A28;}
-.spec-val{font-size:10px;color:#5A5850;}
+.spec-key{font-size:10px;font-weight:700;letter-spacing:0.08em;color:#111;}
+.spec-val{font-size:11px;font-weight:600;color:#333;}
 
 /* PHILOSOPHY */
 .philosophy{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;opacity:0;transition:opacity 0.8s;width:640px;}
@@ -77,6 +82,67 @@ canvas{display:block;}
 .mvq-item.on .mvq-dot{background:var(--c);}
 .mvq-text{font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:#3A3A38;transition:color 0.3s;}
 .mvq-item.on .mvq-text{color:var(--c);}
+@media (max-width: 760px){
+  .hero-brand{top:28px;padding:12px 20px;}
+  .hero-brand-main{font-size:48px;letter-spacing:0.06em;}
+  .hero-brand-sub{font-size:9px;letter-spacing:0.28em;}
+  .hero-tagline{bottom:42px;width:calc(100% - 32px);white-space:normal;padding:16px 18px 20px;}
+  .tagline-main{font-size:24px;}
+  .tagline-sub{font-size:13px;line-height:1.55;}
+}
+
+/* Cinematic ending color system */
+:root{
+  --dynamic-ui:#111111;
+  --dynamic-muted:#333333;
+  --dynamic-soft:rgba(17,17,17,0.56);
+  --dynamic-line:rgba(17,17,17,0.45);
+  --dynamic-card:rgba(255,255,255,0.70);
+  --dynamic-card-border:rgba(17,17,17,0.28);
+  --dynamic-grid:rgba(17,17,17,0.05);
+  --ending-overlay:0;
+  --guide-opacity:1;
+}
+.ui-layer{background:rgba(0,0,0,var(--ending-overlay));transition:background 0.2s linear;}
+.hero-brand-sub,.hero-brand-main,.phase-title,.part-label-name,.stage-letter,.stage-name,.spec-card-title,.spec-key,.scroll-hint{color:var(--dynamic-ui)!important;}
+.tagline-main,.tagline-sub,.phase-desc,.part-label-desc,.stage-kr,.spec-val,.phil-body,.phil-eyebrow,.phil-signal{color:var(--dynamic-muted)!important;}
+.part-label-line{background:var(--dynamic-line)!important;}
+.ui-layer::before{border-color:var(--dynamic-card-border)!important;background:linear-gradient(90deg,var(--dynamic-grid) 0 1px,transparent 1px 100%),linear-gradient(180deg,rgba(255,255,255,0.20),rgba(244,241,232,0.08))!important;background-size:96px 100%,100% 100%!important;}
+.ui-layer::after{color:var(--dynamic-soft)!important;opacity:var(--guide-opacity)!important;transition:opacity 0.2s linear;}
+.spec-card{background:var(--dynamic-card)!important;border-color:var(--dynamic-card-border)!important;}
+.scroll-line{background:var(--dynamic-ui)!important;}
+.philosophy{width:min(760px,calc(100vw - 64px));}
+.philosophy.visible{filter:drop-shadow(0 0 32px rgba(255,255,255,0.18));}
+.phil-eyebrow{font-size:11px!important;font-weight:700!important;letter-spacing:0.42em!important;}
+.phil-body{font-size:23px!important;font-weight:300!important;line-height:2.0!important;color:var(--dynamic-ui)!important;}
+.phil-body em{color:var(--dynamic-ui)!important;font-weight:500!important;}
+.phil-signal{font-size:11px!important;font-weight:700!important;letter-spacing:0.42em!important;color:var(--dynamic-ui)!important;}
+
+/* Final copy + logo ending — isolated from product motion */
+.tagline-main{font-weight:700!important;letter-spacing:-0.055em!important;}
+.tagline-sub{font-size:18px!important;line-height:1.72!important;font-weight:500!important;white-space:normal!important;max-width:520px!important;}
+.philosophy{width:min(820px,calc(100vw - 64px))!important;}
+.phil-body{font-size:clamp(30px,4.8vw,58px)!important;font-weight:650!important;line-height:1.55!important;letter-spacing:-0.055em!important;color:#fff!important;text-shadow:0 0 36px rgba(255,255,255,0.24), 0 12px 48px rgba(0,0,0,0.72)!important;}
+.philosophy{mix-blend-mode:normal;}
+.ending-logo{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.92);opacity:0;pointer-events:none;font-family:'Archivo Black','Pretendard',sans-serif;font-size:clamp(56px,10vw,148px);font-weight:900;letter-spacing:-0.065em;color:#fff;text-shadow:0 0 28px rgba(255,255,255,0.22),0 20px 80px rgba(0,0,0,0.85);z-index:30;transition:none;}
+@media (max-width: 760px){.phil-body{font-size:30px!important;}.ending-logo{font-size:54px;}}
+
+/* Dark cinematic concept override */
+:root{--dynamic-ui:#ffffff;--dynamic-muted:rgba(255,255,255,.78);--dynamic-soft:rgba(255,255,255,.45);--dynamic-line:rgba(255,255,255,.42);--dynamic-card:rgba(10,10,10,.48);--dynamic-card-border:rgba(255,255,255,.14);--dynamic-grid:rgba(255,255,255,.055);}
+.ui-layer{background:radial-gradient(circle at 51% 48%,rgba(255,255,255,.08),transparent 42%),rgba(0,0,0,var(--ending-overlay));}
+.ui-layer::before{inset:0!important;border:1px solid rgba(255,255,255,.18)!important;background:linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(180deg,rgba(255,255,255,.045) 1px,transparent 1px)!important;background-size:132px 100%,100% 92px!important;opacity:.58;}
+.ui-layer::after{display:none!important;}
+.hero-brand{top:10.5%!important;left:4.6%!important;transform:none!important;text-align:left!important;color:#fff!important;z-index:22!important;pointer-events:none!important;}
+.hero-brand-sub{font-size:clamp(12px,1.25vw,18px)!important;letter-spacing:.30em!important;color:#fff!important;margin-bottom:14px!important;opacity:.86!important;}
+.hero-brand-main{font-size:clamp(118px,17vw,260px)!important;line-height:.78!important;letter-spacing:-.065em!important;color:#fff!important;text-shadow:0 2px 0 rgba(255,255,255,.06),0 24px 80px rgba(0,0,0,.68)!important;}
+.hero-brand-main::after{font-size:clamp(14px,1.6vw,26px)!important;margin-left:8px!important;}
+.hero-tagline{left:4.6%!important;bottom:22%!important;text-align:left!important;color:#fff!important;white-space:normal!important;}
+.tagline-main{font-size:30px!important;font-weight:500!important;letter-spacing:-.055em!important;color:#fff!important;margin-bottom:28px!important;max-width:420px;}
+.tagline-sub{font-size:16px!important;line-height:1.72!important;color:rgba(255,255,255,.76)!important;max-width:370px!important;}
+.scroll-hint{color:rgba(255,255,255,.72)!important;}.scroll-line{background:#fff!important;width:52px!important;height:1px!important;}
+.cinema-timeline{position:absolute;left:31.5%;top:22%;height:55%;width:130px;opacity:0;transition:opacity .5s;}.cinema-timeline.visible{opacity:.94}.tl-line{position:absolute;left:8px;top:0;bottom:0;width:1px;background:rgba(255,255,255,.34)}.tl-step{position:relative;margin:0 0 52px 24px;color:rgba(255,255,255,.42);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.04em}.tl-step::before{content:'';position:absolute;left:-20px;top:2px;width:8px;height:8px;border:1px solid rgba(255,255,255,.65);border-radius:50%;background:#050505}.tl-step span{display:block;font-size:12px;margin-bottom:3px}.tl-step b{font-size:10px;font-weight:700}.tl-step.on{color:#fff}.tl-step.on::before{background:#fff;box-shadow:0 0 18px rgba(255,255,255,.72)}
+.philosophy{left:72%!important;top:48%!important;transform:translate(-50%,-50%)!important;text-align:left!important;width:min(390px,28vw)!important;}.phil-body{font-size:clamp(30px,3.1vw,48px)!important;line-height:1.55!important;font-weight:750!important;letter-spacing:-.065em!important;color:#fff!important;text-shadow:0 14px 56px rgba(0,0,0,.7)!important;}.spec-card{background:rgba(8,8,8,.58)!important;box-shadow:none!important;}.ending-logo{width:min(980px,86vw)!important;text-align:center!important;color:#fff!important}.ending-logo-sub{font-family:'IBM Plex Mono',monospace;font-size:clamp(12px,1.55vw,24px);font-weight:600;letter-spacing:.28em;color:#fff;margin-bottom:22px;white-space:nowrap}.ending-logo-main{font-family:'Archivo Black','Pretendard',sans-serif;font-size:clamp(72px,12vw,178px);font-weight:900;letter-spacing:-.065em;line-height:.78;color:#fff;text-shadow:0 0 34px rgba(255,255,255,.14),0 20px 80px rgba(0,0,0,.9)}.ending-logo-main::after{content:'®';font-family:'IBM Plex Mono',monospace;font-size:clamp(12px,1.5vw,24px);vertical-align:top;margin-left:6px}.ending-logo-copy{font-family:'Pretendard',sans-serif;font-size:clamp(15px,1.65vw,26px);font-weight:600;letter-spacing:-.035em;color:#fff;margin-top:26px;white-space:nowrap}@media(max-width:900px){.cinema-timeline{display:none}.philosophy{left:50%!important;width:80vw!important;text-align:center!important}.hero-brand-main{font-size:48px!important}.tagline-main{font-size:24px!important}}
+
 </style>
 </head>
 <body>
@@ -87,14 +153,24 @@ canvas{display:block;}
 
   <!-- HERO -->
   <div class="hero-brand" id="heroBrand">
-    <div class="hero-brand-sub">MECHANICAL AESTHETICS</div>
+    <div class="hero-brand-sub">THE UNOFFICIAL MECHANICAL BUILDER'S GUIDE</div>
     <div class="hero-brand-main">HELIXBEAM</div>
   </div>
   <div class="hero-tagline" id="heroTagline">
-    <div class="tagline-main">직접 만든 것은 다르게 쓰인다</div>
-    <div class="tagline-sub">일상 제품을 기계 구조로 직접 만드는 조립 키트 브랜드</div>
+    <div class="tagline-main">직접 만든 것은 다르게 쓰인다.</div>
+    <div class="tagline-sub">헤릭스빔은<br>일상 제품을 직접 조립하고<br>확장 가능한 구조로 설계하는 브랜드입니다</div>
     <div class="scroll-hint">SCROLL</div>
     <div class="scroll-line"></div>
+  </div>
+
+  <!-- CINEMATIC TIMELINE -->
+  <div class="cinema-timeline" id="cinemaTimeline">
+    <div class="tl-line"></div>
+    <div class="tl-step"><span>00</span><b>INTRO</b></div>
+    <div class="tl-step"><span>01</span><b>GENERATE</b></div>
+    <div class="tl-step"><span>02</span><b>UNDERSTAND</b></div>
+    <div class="tl-step on"><span>03</span><b>ASSEMBLE</b></div>
+    <div class="tl-step"><span>04</span><b>COMPLETE</b></div>
   </div>
 
   <!-- PHASE LABEL -->
@@ -112,52 +188,52 @@ canvas{display:block;}
   </div>
 
   <!-- PART LABELS -->
-  <div class="part-label" id="lbl-base" style="left:8%;top:65%;">
-    <div class="part-label-line" style="width:36px;"></div>
+  <div class="part-label" id="lbl-base" style="left:12%;top:64%;">
+    <div class="part-label-line" style="width:72px;"></div>
     <div class="part-label-name">Bell Base</div>
     <div class="part-label-desc">주철 종형 베이스<br>무게중심 / 진동 흡수</div>
   </div>
-  <div class="part-label lbl-right" id="lbl-body" style="right:8%;top:40%;">
-    <div class="part-label-line" style="width:36px;"></div>
+  <div class="part-label lbl-right" id="lbl-body" style="right:12%;top:39%;">
+    <div class="part-label-line" style="width:72px;"></div>
     <div class="part-label-name">Cylinder Body</div>
     <div class="part-label-desc">기어박스 하우징<br>내부 기어 트레인 보호</div>
   </div>
-  <div class="part-label" id="lbl-plate" style="left:8%;top:38%;">
-    <div class="part-label-line" style="width:36px;"></div>
+  <div class="part-label" id="lbl-plate" style="left:12%;top:37%;">
+    <div class="part-label-line" style="width:72px;"></div>
     <div class="part-label-name">Front Plate</div>
     <div class="part-label-desc">원형 디스크<br>연필 투입구 + 나사 3개</div>
   </div>
-  <div class="part-label lbl-right" id="lbl-gear" style="right:8%;top:55%;">
-    <div class="part-label-line" style="width:36px;"></div>
+  <div class="part-label lbl-right" id="lbl-gear" style="right:12%;top:54%;">
+    <div class="part-label-line" style="width:72px;"></div>
     <div class="part-label-name">Gear Train</div>
     <div class="part-label-desc">감속 기어 시스템<br>토크 증폭 → 블레이드 구동</div>
   </div>
-  <div class="part-label lbl-right" id="lbl-crank" style="right:8%;top:28%;">
-    <div class="part-label-line" style="width:36px;"></div>
+  <div class="part-label lbl-right" id="lbl-crank" style="right:12%;top:27%;">
+    <div class="part-label-line" style="width:72px;"></div>
     <div class="part-label-name">Crank Arm</div>
     <div class="part-label-desc">금속 암 + 목재 손잡이<br>회전력 입력</div>
   </div>
-  <div class="part-label" id="lbl-clamp" style="left:8%;top:18%;">
-    <div class="part-label-line" style="width:36px;"></div>
+  <div class="part-label" id="lbl-clamp" style="left:12%;top:17%;">
+    <div class="part-label-line" style="width:72px;"></div>
     <div class="part-label-name">T-Clamp × 2</div>
     <div class="part-label-desc">상단 고정 장치<br>테이블 엣지 체결</div>
   </div>
-  <div class="part-label" id="lbl-blade" style="left:8%;top:52%;">
-    <div class="part-label-line" style="width:36px;"></div>
+  <div class="part-label" id="lbl-blade" style="left:12%;top:51%;">
+    <div class="part-label-line" style="width:72px;"></div>
     <div class="part-label-name">Blade Holder</div>
     <div class="part-label-desc">캠 연동 블레이드<br>연필 직경 자동 대응</div>
   </div>
-  <div class="part-label lbl-right" id="lbl-screw" style="right:8%;top:70%;">
-    <div class="part-label-line" style="width:36px;"></div>
+  <div class="part-label lbl-right" id="lbl-screw" style="right:12%;top:69%;">
+    <div class="part-label-line" style="width:72px;"></div>
     <div class="part-label-name">Screw × 3</div>
     <div class="part-label-desc">전면 플레이트 체결<br>체결력을 만든다</div>
   </div>
 
   <!-- STAGE -->
-  <div class="stage-indicator" id="stageM" style="color:#8A8880;">
+  <div class="stage-indicator" id="stageM" style="color:#111;">
     <div class="stage-letter">M</div>
-    <div class="stage-name" style="color:#5A5850;">Mechanical</div>
-    <div class="stage-kr" style="color:#3A3A38;">기계요소가 제 기능을<br>온전히 수행하는 것</div>
+    <div class="stage-name" style="color:#111;">Mechanical</div>
+    <div class="stage-kr" style="color:#333;">기계요소가 제 기능을<br>온전히 수행하는 것</div>
   </div>
 
   <!-- SPEC CARD -->
@@ -168,7 +244,7 @@ canvas{display:block;}
     <div class="spec-row"><span class="spec-key">BASE WEIGHT</span><span class="spec-val">680 g</span></div>
     <div class="spec-row"><span class="spec-key">TORQUE</span><span class="spec-val">0.45 N·m</span></div>
     <div class="spec-row"><span class="spec-key">MATERIAL</span><span class="spec-val">Cast Iron / Steel</span></div>
-    <div class="spec-row"><span class="spec-key">STAGE</span><span class="spec-val" style="color:#4A7AAA;">M — Mechanical</span></div>
+    <div class="spec-row"><span class="spec-key">STAGE</span><span class="spec-val" style="color:#E84A2A;">M — Mechanical</span></div>
   </div>
 
   <!-- MVQ -->
@@ -186,15 +262,18 @@ canvas{display:block;}
 
   <!-- PHILOSOPHY -->
   <div class="philosophy" id="philosophy">
-    <div class="phil-eyebrow">Mechanical Aesthetics</div>
     <div class="phil-body">
-      우리는 소비하는 시대에 살고 있습니다.<br>
-      클릭 한 번이면 모든 것이 가능한 세상이죠.<br><br>
-      <em>다만, AI 시대에서 가장 값비싼 가치가 무엇일까요?</em><br><br>
-      결국 불완전하지만 직접 손으로<br>
-      현장감을 느끼며 만들어내는 경험이라고 생각합니다.
+      일상의 모든 제품은<br>
+      이해되고<br>
+      직접 만들어지면서<br>
+      진화한다
     </div>
-    <div class="phil-signal">THAT IS MECHANICAL AESTHETICS</div>
+  </div>
+
+  <div class="ending-logo" id="endingLogo">
+    <div class="ending-logo-sub">THE UNOFFICIAL MECHANICAL BUILDER’S GUIDE</div>
+    <div class="ending-logo-main">HELIXBEAM</div>
+    <div class="ending-logo-copy">일상의 모든 제품은 이해되고 직접 만들어지면서 진화한다</div>
   </div>
 
 </div>
@@ -207,11 +286,12 @@ renderer.setPixelRatio(Math.min(devicePixelRatio,2));
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.1;
+renderer.toneMappingExposure = 1.35;
+renderer.setClearColor(0x050505, 1);
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(42,1,0.1,100);
-camera.position.set(0,2.2,7);
+camera.position.set(0,2.15,5.25);
 camera.lookAt(0,1.2,0);
 
 function resize(){
@@ -224,12 +304,52 @@ resize();
 addEventListener('resize',resize);
 
 // ── MATERIALS ──
-const matCastIron = new THREE.MeshStandardMaterial({color:0x5A5855,roughness:0.75,metalness:0.6});
-const matSteel    = new THREE.MeshStandardMaterial({color:0x8A8880,roughness:0.3,metalness:0.92});
-const matChrome   = new THREE.MeshStandardMaterial({color:0xA0A098,roughness:0.15,metalness:0.98});
-const matWood     = new THREE.MeshStandardMaterial({color:0x8B5E3C,roughness:0.85,metalness:0.0});
-const matGear     = new THREE.MeshStandardMaterial({color:0x7A7870,roughness:0.4,metalness:0.85});
-const matDark     = new THREE.MeshStandardMaterial({color:0x2A2A28,roughness:0.6,metalness:0.7});
+// Soft white-gray metal system: low contrast, satin/brushed aluminum feel
+function brushedTexture(){
+  const cnv = document.createElement('canvas');
+  cnv.width = 256; cnv.height = 256;
+  const ctx = cnv.getContext('2d');
+  ctx.fillStyle = '#e7e8e4';
+  ctx.fillRect(0,0,256,256);
+  for(let y=0;y<256;y++){
+    const v = 220 + Math.random()*24;
+    ctx.fillStyle = `rgba(${v},${v},${v},0.14)`;
+    ctx.fillRect(0,y,256,1);
+  }
+  const tex = new THREE.CanvasTexture(cnv);
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  tex.repeat.set(1.8,1.8);
+  return tex;
+}
+const brushedMap = brushedTexture();
+const matCastIron = new THREE.MeshStandardMaterial({
+  color:0xD9DBD7, roughness:0.68, metalness:0.72,
+  map: brushedMap, envMapIntensity:0.7
+});
+const matSteel = new THREE.MeshStandardMaterial({
+  color:0xE8E9E5, roughness:0.58, metalness:0.86,
+  map: brushedMap, envMapIntensity:0.85
+});
+const matChrome = new THREE.MeshStandardMaterial({
+  color:0xF4F5F2, roughness:0.36, metalness:0.96,
+  envMapIntensity:1.0
+});
+const matWood = new THREE.MeshStandardMaterial({
+  color:0xEEE6C9, roughness:0.50, metalness:0.38,
+  envMapIntensity:0.55
+});
+const matGear = new THREE.MeshStandardMaterial({
+  color:0xD2D5D2, roughness:0.62, metalness:0.78,
+  map: brushedMap, envMapIntensity:0.72
+});
+const matDark = new THREE.MeshStandardMaterial({
+  color:0xAEB3B0, roughness:0.55, metalness:0.82,
+  envMapIntensity:0.65
+});
+const matGearBlue  = new THREE.MeshStandardMaterial({color:0xD5D8D5,roughness:0.64,metalness:0.78,map:brushedMap,envMapIntensity:0.72});
+const matGearGreen = new THREE.MeshStandardMaterial({color:0xCDD1CE,roughness:0.66,metalness:0.76,map:brushedMap,envMapIntensity:0.70});
+const matGearRed   = new THREE.MeshStandardMaterial({color:0xE1E2DE,roughness:0.56,metalness:0.84,map:brushedMap,envMapIntensity:0.80});
+const matAxleYellow= new THREE.MeshStandardMaterial({color:0xEEE8CF,roughness:0.48,metalness:0.46,envMapIntensity:0.55});
 
 function mk(geo,mat){const m=new THREE.Mesh(geo,mat);m.castShadow=true;m.receiveShadow=true;return m;}
 function grp(){return new THREE.Group();}
@@ -237,6 +357,9 @@ function grp(){return new THREE.Group();}
 // ── BUILD PENCIL SHARPENER ──
 const root = grp();
 scene.add(root);
+root.scale.set(1.30, 1.30, 1.30);
+root.rotation.y = -0.58;
+root.rotation.x = 0.035;
 
 // 1. BELL BASE — 종형 주철 베이스
 const gBase = grp();
@@ -285,16 +408,16 @@ root.add(gPlate);
 // 4. GEAR TRAIN — 감속 기어 (내부에서 살짝 보임)
 const gGears = grp();
 // 큰 기어
-const gear1 = mk(new THREE.CylinderGeometry(0.42,0.42,0.1,24), matGear);
+const gear1 = mk(new THREE.CylinderGeometry(0.42,0.42,0.1,24), matGearBlue);
 gear1.rotation.x = Math.PI/2;
 // 작은 기어 (피니언)
-const gear2 = mk(new THREE.CylinderGeometry(0.18,0.18,0.12,18), matGear);
+const gear2 = mk(new THREE.CylinderGeometry(0.18,0.18,0.12,18), matGearGreen);
 gear2.rotation.x = Math.PI/2;
 gear2.position.set(0.38,0.28,0);
 // 기어 이빨 표현
 for(let i=0;i<16;i++){
   const ang = (i/16)*Math.PI*2;
-  const tooth = mk(new THREE.BoxGeometry(0.06,0.08,0.12), matGear);
+  const tooth = mk(new THREE.BoxGeometry(0.06,0.08,0.12), (i%3===0?matGearRed:(i%3===1?matGearBlue:matGearGreen)));
   tooth.rotation.x = Math.PI/2;
   tooth.position.set(Math.cos(ang)*0.44, Math.sin(ang)*0.44, 0);
   tooth.rotation.z = ang;
@@ -308,7 +431,7 @@ root.add(gGears);
 const gCrank = grp();
 const crankHub = mk(new THREE.CylinderGeometry(0.09,0.09,0.18,16), matChrome);
 crankHub.rotation.x = Math.PI/2;
-const crankArm = mk(new THREE.BoxGeometry(0.06,0.55,0.06), matSteel);
+const crankArm = mk(new THREE.BoxGeometry(0.06,0.55,0.06), matAxleYellow);
 crankArm.position.set(0,0.27,0);
 // 나무 손잡이
 const handleGrip = mk(new THREE.CylinderGeometry(0.055,0.045,0.28,16), matWood);
@@ -337,7 +460,7 @@ root.add(gClamps);
 // 7. BLADE HOLDER — 블레이드 홀더 (캠 연동)
 const gBlade = grp();
 const bladeBody = mk(new THREE.BoxGeometry(0.35,0.12,0.18), matSteel);
-const bladeCam = mk(new THREE.CylinderGeometry(0.1,0.1,0.14,16), matGear);
+const bladeCam = mk(new THREE.CylinderGeometry(0.1,0.1,0.14,16), matGearRed);
 bladeCam.rotation.x = Math.PI/2;
 bladeCam.position.x = 0.2;
 gBlade.add(bladeBody, bladeCam);
@@ -411,17 +534,19 @@ addEventListener('scroll',()=>{
 },{passive:true});
 
 // ── LIGHTS ──
-// 주변광 — 매우 어둡게
-scene.add(new THREE.AmbientLight(0x080808, 0.25));
+// Soft studio light for pale white-gray metal: low contrast, broad highlights
+const ambient = new THREE.AmbientLight(0xFFFFFF, 0.92);
+scene.add(ambient);
+const hemi = new THREE.HemisphereLight(0xFFFFFF, 0xE9E4DA, 0.82);
+scene.add(hemi);
 
-// 메인 스포트라이트 — 정수리에서 제품 중심으로
-const spot = new THREE.SpotLight(0xF5EED8, 7.0);
-spot.position.set(0, 10, 1.0);
-spot.target.position.set(0, 1.2, 0);
-spot.angle = Math.PI / 7;
-spot.penumbra = 0.4;
-spot.decay = 1.6;
-spot.distance = 22;
+const spot = new THREE.SpotLight(0xFFF7E8, 2.85);
+spot.position.set(3.4, 6.0, 6.2);
+spot.target.position.set(0, 1.35, 0);
+spot.angle = Math.PI / 4.1;
+spot.penumbra = 0.78;
+spot.decay = 1.25;
+spot.distance = 24;
 spot.castShadow = true;
 spot.shadow.mapSize.set(2048, 2048);
 spot.shadow.camera.near = 1;
@@ -430,30 +555,49 @@ spot.shadow.bias = -0.001;
 scene.add(spot);
 scene.add(spot.target);
 
-// 보조 스포트 — 약간 앞쪽에서 정면 살짝 보충
-const spot2 = new THREE.SpotLight(0xE8DCC8, 2.0);
-spot2.position.set(0, 8, 5);
-spot2.target.position.set(0, 1.2, 0);
-spot2.angle = Math.PI / 10;
-spot2.penumbra = 0.65;
-spot2.decay = 2.0;
-spot2.distance = 16;
+const spot2 = new THREE.SpotLight(0xFFFFFF, 1.65);
+spot2.position.set(-3.2, 3.4, 5.4);
+spot2.target.position.set(0, 1.35, 0);
+spot2.angle = Math.PI / 3.8;
+spot2.penumbra = 0.86;
+spot2.decay = 1.55;
+spot2.distance = 20;
 scene.add(spot2);
 scene.add(spot2.target);
 
-// 림 라이트 — Signal Blue, 뒤에서 윤곽선
-const rim = new THREE.DirectionalLight(0x4A7AAA, 0.3);
-rim.position.set(-3, 4, -5);
+const rim = new THREE.DirectionalLight(0xEAF1FF, 0.38);
+rim.position.set(-4, 5, -4);
 scene.add(rim);
 
 // Floor
 const floor = mk(
   new THREE.PlaneGeometry(30,30),
-  new THREE.MeshStandardMaterial({color:0x090908,roughness:0.9,metalness:0.05})
+  new THREE.MeshStandardMaterial({color:0xF1EEE6,roughness:0.96,metalness:0.01})
 );
 floor.rotation.x=-Math.PI/2;
 floor.receiveShadow=true;
 scene.add(floor);
+
+// Ending transition colors
+const bgLight = new THREE.Color(0x050505);
+const bgDark  = new THREE.Color(0x030303); // final near-black cinematic background
+const floorLight = new THREE.Color(0x111111);
+const floorDark  = new THREE.Color(0x050505);
+function mixHex(a,b,t){
+  t=Math.max(0,Math.min(1,t));
+  const ar=(a>>16)&255, ag=(a>>8)&255, ab=a&255;
+  const br=(b>>16)&255, bg=(b>>8)&255, bb=b&255;
+  const r=Math.round(ar+(br-ar)*t), g=Math.round(ag+(bg-ag)*t), bl=Math.round(ab+(bb-ab)*t);
+  return `rgb(${r},${g},${bl})`;
+}
+function mixRgba(a,b,t,alpha){
+  t=Math.max(0,Math.min(1,t));
+  const ar=(a>>16)&255, ag=(a>>8)&255, ab=a&255;
+  const br=(b>>16)&255, bg=(b>>8)&255, bb=b&255;
+  const r=Math.round(ar+(br-ar)*t), g=Math.round(ag+(bg-ag)*t), bl=Math.round(ab+(bb-ab)*t);
+  return `rgba(${r},${g},${bl},${alpha})`;
+}
+
 
 // ── UI STATE ──
 function updateUI(sp){
@@ -466,10 +610,11 @@ function updateUI(sp){
   const stM  = document.getElementById('stageM');
   const mvq  = document.getElementById('mvqNav');
   const phil = document.getElementById('philosophy');
+  const timeline = document.getElementById('cinemaTimeline');
   const mvqM = document.getElementById('mvqM');
 
   // Hero fade
-  const heroA = Math.max(0, 1 - sp * 10);
+  const heroA = Math.max(0, 1 - sp * 7.5);
   hero.style.opacity = heroA;
   tag.style.opacity  = heroA;
 
@@ -500,8 +645,8 @@ function updateUI(sp){
   mvq.classList.toggle('visible', sp > 0.08 && sp < 0.88);
   mvqM.classList.toggle('on', sp > 0.08);
 
-  // Philosophy
-  phil.classList.toggle('visible', sp > 0.90);
+  // Vision statement — appears when disassembly begins and stays until the final logo reveal
+  phil.classList.toggle('visible', sp >= 0.14 && sp < 0.965);
   if(sp > 0.90){
     stM.classList.remove('visible');
     spec.classList.remove('visible');
@@ -514,12 +659,61 @@ let time = 0;
 let gearAngle = 0;
 
 // ── CAMERA ──
-let camX=0, camY=2.2, camZ=7;
+let camX=0, camY=2.05, camZ=5.85;
 
 function animate(){
   requestAnimationFrame(animate);
   time += 0.016;
   const sp = scrollProgress;
+
+  // Cinematic ending: the white guide falls into near-black so the final copy becomes the hero.
+  const darkPhase = smootherstep((sp - 0.78) / 0.22);
+  const textHeroPhase = smootherstep((sp - 0.88) / 0.12);
+  const finalLogoPhase = smootherstep((sp - 0.965) / 0.035);
+  const bgNow = bgLight.clone().lerp(bgDark, Math.max(darkPhase, finalLogoPhase));
+  renderer.setClearColor(bgNow, 1);
+  floor.material.color.copy(floorLight.clone().lerp(floorDark, darkPhase));
+  floor.material.needsUpdate = true;
+
+  // Fade product lighting down aggressively at the end; keep only a faint rim/silhouette.
+  ambient.intensity = 0.92 * (1 - darkPhase * 0.96);
+  hemi.intensity = 0.82 * (1 - darkPhase * 0.95);
+  rim.intensity = 0.38 + darkPhase * 0.42;
+
+  // UI shifts from black technical guide to crisp white ending typography.
+  document.documentElement.style.setProperty('--dynamic-ui', mixHex(0x111111, 0xFFFFFF, darkPhase));
+  document.documentElement.style.setProperty('--dynamic-muted', mixHex(0x333333, 0xFFFFFF, Math.max(darkPhase, textHeroPhase)));
+  document.documentElement.style.setProperty('--dynamic-soft', mixRgba(0x111111, 0xFFFFFF, darkPhase, 0.58 + textHeroPhase*0.28));
+  document.documentElement.style.setProperty('--dynamic-line', mixRgba(0x111111, 0xFFFFFF, darkPhase, 0.48 + textHeroPhase*0.28));
+  document.documentElement.style.setProperty('--dynamic-card', darkPhase < 0.45 ? `rgba(255,255,255,${0.70 - darkPhase*0.55})` : `rgba(0,0,0,${0.30 + textHeroPhase*0.42})`);
+  document.documentElement.style.setProperty('--dynamic-card-border', mixRgba(0x111111, 0xFFFFFF, darkPhase, 0.28 + textHeroPhase*0.34));
+  document.documentElement.style.setProperty('--dynamic-grid', darkPhase < 0.5 ? `rgba(17,17,17,${0.05*(1-darkPhase*1.2)})` : `rgba(255,255,255,${0.018*(1-textHeroPhase)})`);
+  document.documentElement.style.setProperty('--ending-overlay', (finalLogoPhase * 0.90).toFixed(3));
+  document.documentElement.style.setProperty('--guide-opacity', (1 - smootherstep((sp - 0.82) / 0.12)).toFixed(3));
+  document.documentElement.style.setProperty('--dynamic-ui','#ffffff');
+  document.documentElement.style.setProperty('--dynamic-muted','rgba(255,255,255,.78)');
+  document.documentElement.style.setProperty('--dynamic-soft','rgba(255,255,255,.45)');
+  document.documentElement.style.setProperty('--dynamic-line','rgba(255,255,255,.42)');
+  document.documentElement.style.setProperty('--dynamic-card','rgba(10,10,10,.48)');
+  document.documentElement.style.setProperty('--dynamic-card-border','rgba(255,255,255,.14)');
+  document.documentElement.style.setProperty('--dynamic-grid','rgba(255,255,255,.055)');
+
+  // Final logo reveal: keep product/part animation intact, then fade the vision line into the logo.
+  const endingLogo = document.getElementById('endingLogo');
+  if (endingLogo) {
+    endingLogo.style.opacity = finalLogoPhase;
+    endingLogo.style.transform = `translate(-50%, -50%) scale(${0.92 + finalLogoPhase * 0.16})`;
+  }
+  const philEl = document.getElementById('philosophy');
+  if (philEl) {
+    philEl.style.opacity = (sp >= 0.14 && sp < 0.965) ? (1 - finalLogoPhase) : 0;
+  }
+
+
+  // Hero view: start at a three-quarter angle, then settle to front view before the disassembly begins
+  const heroTurn = 1 - smootherstep(sp / 0.13);
+  root.rotation.y += ((-0.58 * heroTurn) - root.rotation.y) * 0.08;
+  root.rotation.x += ((0.035 * heroTurn) - root.rotation.x) * 0.08;
 
   // ── UPDATE PART POSITIONS ──
   parts.forEach((p,i)=>{
@@ -581,22 +775,24 @@ function animate(){
   // Crank idle sway
   gCrank.rotation.z = 0.15 + Math.sin(time*0.6)*0.04;
 
-  // 스포트라이트 — 분해 시 빔이 넓어지며 파츠 전체 조명, 재조립 시 다시 좁아짐
+  // 스포트라이트 — 분해 시 새 기본 각도(π/5)를 기준으로 더 넓고 부드럽게 확장
   const explodeAmt = Math.max(...state.map(s=>s.t));
-  const assembleAmt = 1 - explodeAmt;
-  // 완성품: 좁고 강한 빔 / 분해: 넓고 부드러운 빔
-  spot.angle   = (Math.PI/7)  + explodeAmt * (Math.PI/7);
-  spot.intensity = 7.0 - explodeAmt * 2.0;
-  spot2.angle  = (Math.PI/10) + explodeAmt * (Math.PI/8);
-  spot2.intensity = 2.0 + explodeAmt * 1.0;
+  // 완성품: 전면을 살리는 넓은 빔 / 분해: 파츠 전체를 덮는 더 넓은 빔
+  spot.angle = (Math.PI / 4.1) + explodeAmt * (Math.PI / 14);
+  spot.intensity = (2.85 - explodeAmt * 0.25) * (1 - darkPhase * 0.92) + darkPhase * 0.08;
+  spot2.angle = (Math.PI / 3.8) + explodeAmt * (Math.PI / 18);
+  spot2.intensity = (1.65 + explodeAmt * 0.35) * (1 - darkPhase * 0.96);
   // 타깃: 완성 시 제품 중심, 분해 시 약간 위로 올라가 전체 조망
-  spot.target.position.y = 1.2 + explodeAmt * 1.2;
+  spot.target.position.y = 1.3 + explodeAmt * 1.1;
+  spot2.target.position.y = 1.3 + explodeAmt * 0.8;
   spot.target.updateMatrixWorld();
+  spot2.target.updateMatrixWorld();
 
-  // Camera drift
-  const targetCamY = 2.2 + sp * 1.0;
-  const targetCamZ = 7.0 + sp * 1.5;
-  const targetCamX = sp > 0.55 ? Math.sin(time*0.12)*0.8 : 0;
+  // Camera drift — opening starts slightly off-axis, then returns to front before explode
+  const heroView = 1 - smootherstep(sp / 0.13);
+  const targetCamY = 2.12 + sp * 0.78;
+  const targetCamZ = 5.25 + sp * 0.95 - heroView * 0.28;
+  const targetCamX = heroView * 0.58 + (sp > 0.55 ? Math.sin(time*0.12)*0.65 : 0);
   camX += (targetCamX - camX)*0.04;
   camY += (targetCamY - camY)*0.04;
   camZ += (targetCamZ - camZ)*0.04;
