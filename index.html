@@ -143,6 +143,80 @@ canvas{display:block;}
 .cinema-timeline{position:absolute;left:31.5%;top:22%;height:55%;width:130px;opacity:0;transition:opacity .5s;}.cinema-timeline.visible{opacity:.94}.tl-line{position:absolute;left:8px;top:0;bottom:0;width:1px;background:rgba(255,255,255,.34)}.tl-step{position:relative;margin:0 0 52px 24px;color:rgba(255,255,255,.42);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.04em}.tl-step::before{content:'';position:absolute;left:-20px;top:2px;width:8px;height:8px;border:1px solid rgba(255,255,255,.65);border-radius:50%;background:#050505}.tl-step span{display:block;font-size:12px;margin-bottom:3px}.tl-step b{font-size:10px;font-weight:700}.tl-step.on{color:#fff}.tl-step.on::before{background:#fff;box-shadow:0 0 18px rgba(255,255,255,.72)}
 .philosophy{left:72%!important;top:48%!important;transform:translate(-50%,-50%)!important;text-align:left!important;width:min(390px,28vw)!important;}.phil-body{font-size:clamp(30px,3.1vw,48px)!important;line-height:1.55!important;font-weight:750!important;letter-spacing:-.065em!important;color:#fff!important;text-shadow:0 14px 56px rgba(0,0,0,.7)!important;}.spec-card{background:rgba(8,8,8,.58)!important;box-shadow:none!important;}.ending-logo{width:min(980px,86vw)!important;text-align:center!important;color:#fff!important}.ending-logo-sub{font-family:'IBM Plex Mono',monospace;font-size:clamp(12px,1.55vw,24px);font-weight:600;letter-spacing:.28em;color:#fff;margin-bottom:22px;white-space:nowrap}.ending-logo-main{font-family:'Archivo Black','Pretendard',sans-serif;font-size:clamp(72px,12vw,178px);font-weight:900;letter-spacing:-.065em;line-height:.78;color:#fff;text-shadow:0 0 34px rgba(255,255,255,.14),0 20px 80px rgba(0,0,0,.9)}.ending-logo-main::after{content:'®';font-family:'IBM Plex Mono',monospace;font-size:clamp(12px,1.5vw,24px);vertical-align:top;margin-left:6px}.ending-logo-copy{font-family:'Pretendard',sans-serif;font-size:clamp(15px,1.65vw,26px);font-weight:600;letter-spacing:-.035em;color:#fff;margin-top:26px;white-space:nowrap}@media(max-width:900px){.cinema-timeline{display:none}.philosophy{left:50%!important;width:80vw!important;text-align:center!important}.hero-brand-main{font-size:48px!important}.tagline-main{font-size:24px!important}}
 
+
+/* Final polish: safe full-width hero logo + cinematic light sweep */
+.hero-brand{
+  top:7.2%!important;
+  left:50%!important;
+  transform:translateX(-50%)!important;
+  width:100%!important;
+  max-width:96vw!important;
+  text-align:center!important;
+  overflow:visible!important;
+  z-index:24!important;
+}
+.hero-brand-sub{
+  font-size:clamp(12px,1.15vw,17px)!important;
+  letter-spacing:.32em!important;
+  margin-bottom:16px!important;
+  color:#fff!important;
+  opacity:.88!important;
+}
+.hero-brand-main{
+  position:relative!important;
+  display:inline-block!important;
+  overflow:hidden!important;
+  max-width:95vw!important;
+  white-space:nowrap!important;
+  font-size:clamp(108px,15.7vw,235px)!important;
+  letter-spacing:-.045em!important;
+  line-height:.78!important;
+  color:#fff!important;
+  text-shadow:0 2px 0 rgba(255,255,255,.08),0 26px 90px rgba(0,0,0,.72)!important;
+}
+.hero-brand-main::before,
+.ending-logo-main::before{
+  content:'';
+  position:absolute;
+  top:-60%;
+  left:-90%;
+  width:42%;
+  height:220%;
+  background:linear-gradient(108deg,
+    transparent 0%,
+    rgba(255,255,255,0.00) 35%,
+    rgba(255,255,255,0.72) 48%,
+    rgba(255,255,255,0.92) 52%,
+    rgba(255,255,255,0.00) 66%,
+    transparent 100%);
+  transform:skewX(-18deg);
+  mix-blend-mode:screen;
+  filter:blur(.5px);
+  opacity:.9;
+  pointer-events:none;
+  animation:helixLogoSweep 5.2s cubic-bezier(.45,0,.2,1) infinite;
+}
+.hero-brand-main::after{font-size:clamp(13px,1.45vw,22px)!important;margin-left:7px!important;}
+.ending-logo-main{
+  position:relative!important;
+  display:inline-block!important;
+  overflow:hidden!important;
+  color:#fff!important;
+}
+.ending-logo-main::before{animation-delay:1.15s;}
+@keyframes helixLogoSweep{
+  0%{left:-90%;opacity:0;}
+  10%{opacity:.95;}
+  36%{left:118%;opacity:.88;}
+  47%{left:118%;opacity:0;}
+  100%{left:118%;opacity:0;}
+}
+@media(max-width:900px){
+  .hero-brand{top:8%!important;}
+  .hero-brand-main{font-size:clamp(58px,18vw,128px)!important;letter-spacing:-.04em!important;}
+  .hero-brand-sub{font-size:9px!important;letter-spacing:.22em!important;}
+}
+
 </style>
 </head>
 <body>
@@ -261,14 +335,14 @@ canvas{display:block;}
   </div>
 
   <!-- PHILOSOPHY -->
-  <!-- <div class="philosophy" id="philosophy">
+  <div class="philosophy" id="philosophy">
     <div class="phil-body">
       일상의 모든 제품은<br>
       이해되고<br>
       직접 만들어지면서<br>
       진화한다
     </div>
-  </div> -->
+  </div>
 
   <div class="ending-logo" id="endingLogo">
     <div class="ending-logo-sub">THE UNOFFICIAL MECHANICAL BUILDER’S GUIDE</div>
