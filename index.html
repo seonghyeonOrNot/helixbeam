@@ -182,9 +182,6 @@ canvas{display:block;}
   bottom:48px!important;
   top:auto!important;
 }
-.stage-indicator{
-  opacity:1;
-}
 
 
 /* Hide M mechanical text on final scene */
@@ -199,10 +196,159 @@ canvas{display:block;}
   visibility:hidden!important;
 }
 
+
+
+/* Repeating aircraft-like yellow light sweep */
+.intro-light-sweep{
+  position:fixed;
+  left:-42vw;
+  top:50vh;
+  width:78vw;
+  height:30vh;
+  z-index:8;
+  pointer-events:none;
+  opacity:0;
+  transform:skewX(-24deg) rotate(-8deg);
+  background:
+    linear-gradient(90deg,
+      transparent 0%,
+      rgba(255,210,86,0.00) 18%,
+      rgba(255,204,68,0.18) 38%,
+      rgba(255,230,132,0.72) 50%,
+      rgba(255,204,68,0.20) 62%,
+      rgba(255,210,86,0.00) 82%,
+      transparent 100%);
+  filter:blur(18px);
+  mix-blend-mode:screen;
+  animation:
+    aircraftLightSweep 5.8s cubic-bezier(.18,.76,.16,1) 0.4s infinite,
+    aircraftLightPulse 5.8s ease-in-out 0.4s infinite;
+}
+.intro-light-sweep::before{
+  content:'';
+  position:absolute;
+  left:18%;
+  top:30%;
+  width:54%;
+  height:54%;
+  border-radius:999px;
+  background:radial-gradient(circle,rgba(255,238,150,0.84),rgba(255,210,70,0.22) 42%,transparent 72%);
+  filter:blur(24px);
+}
+.intro-light-sweep::after{
+  content:'';
+  position:absolute;
+  left:30%;
+  top:-32%;
+  width:42%;
+  height:130%;
+  border-radius:999px;
+  background:linear-gradient(180deg,transparent,rgba(255,232,132,.42),transparent);
+  filter:blur(28px);
+  opacity:.9;
+}
+@keyframes aircraftLightSweep{
+  0%{transform:translateX(-20vw) translateY(10vh) skewX(-24deg) rotate(-8deg);}
+  24%{transform:translateX(54vw) translateY(-16vh) skewX(-24deg) rotate(-8deg);}
+  52%{transform:translateX(138vw) translateY(8vh) skewX(-24deg) rotate(-8deg);}
+  72%{transform:translateX(62vw) translateY(-4vh) skewX(-24deg) rotate(-8deg);}
+  100%{transform:translateX(-20vw) translateY(10vh) skewX(-24deg) rotate(-8deg);}
+}
+@keyframes aircraftLightPulse{
+  0%,10%{opacity:0;}
+  18%{opacity:.55;}
+  30%{opacity:.18;}
+  44%{opacity:.72;}
+  56%{opacity:0;}
+  70%{opacity:.38;}
+  84%{opacity:.12;}
+  100%{opacity:0;}
+}
+.intro-product-glint{
+  position:fixed;
+  left:50%;
+  top:47%;
+  width:38vw;
+  height:42vh;
+  transform:translate(-50%,-50%);
+  z-index:9;
+  pointer-events:none;
+  opacity:0;
+  background:
+    radial-gradient(ellipse at 58% 42%,rgba(255,236,150,.36),transparent 42%),
+    linear-gradient(105deg,transparent 20%,rgba(255,232,142,.46) 48%,transparent 72%);
+  filter:blur(22px);
+  mix-blend-mode:screen;
+  animation:productGlintPulse 5.8s ease-in-out 0.4s infinite;
+}
+@keyframes productGlintPulse{
+  0%,20%{opacity:0;}
+  30%{opacity:.55;}
+  38%{opacity:.16;}
+  48%{opacity:.62;}
+  58%,100%{opacity:0;}
+}
+.intro-light-sweep.hide,
+.intro-product-glint.hide{
+  opacity:0!important;
+  animation:none!important;
+}
+
+
+/* First-screen right vertical guide text */
+.intro-side-guide{
+  position:fixed;
+  right:0px;
+  top:50%;
+  transform:translateY(-50%) rotate(90deg);
+  transform-origin:center;
+  z-index:24;
+  pointer-events:none;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.28em;
+  color:rgba(255,255,255,.58);
+  white-space:nowrap;
+  opacity:1;
+  transition:opacity .35s ease;
+}
+.intro-side-guide.hide{
+  opacity:0;
+}
+@media(max-width:900px){
+  .intro-side-guide{display:none;}
+}
+
+
+/* Cursor-follow yellow light */
+.intro-light-sweep{
+  position:fixed;
+  left:0;
+  top:0;
+  width:280px;
+  height:280px;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:8;
+  opacity:0.6;
+  background:radial-gradient(circle, rgba(255,230,140,0.55) 0%, rgba(255,210,70,0.25) 40%, rgba(255,210,70,0.05) 70%, transparent 100%);
+  filter:blur(30px);
+  transform:translate(-50%, -50%);
+  transition:opacity .3s ease;
+  animation:none!important;
+}
+.intro-light-sweep.hide{
+  opacity:0!important;
+}
+
 </style>
 </head>
 <body>
 <div id="canvas-container"><canvas id="c"></canvas></div>
+<div class="intro-light-sweep" id="introLightSweep"></div>
+<div class="intro-product-glint" id="introProductGlint"></div>
+<div class="intro-side-guide" id="introSideGuide">MECHANICAL SYSTEM GUIDE</div>
 <div class="scroll-driver" id="sd"></div>
 
 <div class="ui-layer">
@@ -329,7 +475,26 @@ canvas{display:block;}
 
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js">
+// Cursor-follow light logic
+const cursorLight = document.getElementById('introLightSweep');
+let mouseX = window.innerWidth / 2;
+let mouseY = window.innerHeight / 2;
+
+window.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+function updateCursorLight(){
+  if(!cursorLight) return;
+  cursorLight.style.left = mouseX + 'px';
+  cursorLight.style.top = mouseY + 'px';
+  requestAnimationFrame(updateCursorLight);
+}
+updateCursorLight();
+
+</script>
 <script>
 const canvas = document.getElementById('c');
 const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
@@ -731,7 +896,7 @@ function updateUI(sp){
   });
 
   // Stage / spec
-  const showM = sp < 0.90;
+  const showM = sp > 0.08 && sp < 0.90;
   stM.classList.toggle('visible', showM);
   spec.classList.toggle('visible', sp > 0.35 && sp < 0.88);
   mvq.classList.toggle('visible', sp > 0.08 && sp < 0.88);
@@ -899,6 +1064,17 @@ function animate(){
   camera.position.set(camX, camY, camZ);
   camera.lookAt(0, 1.5, 0);
 
+
+  const introLight = document.getElementById('introLightSweep');
+  const introProductGlint = document.getElementById('introProductGlint');
+  const hideIntroLight = sp > 0.12;
+  if (introLight) introLight.classList.toggle('hide', hideIntroLight);
+  if (introProductGlint) introProductGlint.classList.toggle('hide', hideIntroLight);
+
+
+  const introSideGuide = document.getElementById('introSideGuide');
+  if (introSideGuide) introSideGuide.classList.toggle('hide', sp > 0.08);
+
   updateStoryLine(sp);
   updateUI(sp);
 
@@ -923,6 +1099,25 @@ setTimeout(()=>{
 },400);
 
 animate();
+
+// Cursor-follow light logic
+const cursorLight = document.getElementById('introLightSweep');
+let mouseX = window.innerWidth / 2;
+let mouseY = window.innerHeight / 2;
+
+window.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+function updateCursorLight(){
+  if(!cursorLight) return;
+  cursorLight.style.left = mouseX + 'px';
+  cursorLight.style.top = mouseY + 'px';
+  requestAnimationFrame(updateCursorLight);
+}
+updateCursorLight();
+
 </script>
 </body>
 </html>
